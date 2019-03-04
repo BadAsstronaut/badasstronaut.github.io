@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title>A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node</title>
     <style>
 
     html body {
@@ -105,9 +105,6 @@ $(document).ready(function(){
 </script>
  <meta name="generator" content="Hugo 0.40.1" />
     
-    <link href="https://badasstronaut.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Badasstronaut Solutions" />
-    <link href="https://badasstronaut.github.io/index.xml" rel="feed" type="application/rss+xml" title="Badasstronaut Solutions" />
-    
     
 
     
@@ -120,12 +117,14 @@ $(document).ready(function(){
 
     
     
-    <meta property="og:title" content="Badasstronaut Solutions">
-    <meta property="og:type" content="website">
-    <meta property="description" content="Mickey&#39;s personal site">
-    <meta property="og:description" content="Mickey&#39;s personal site">
+    <meta property="og:title" content="A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node">
+    <meta property="og:type" content="article">
+    
     <meta name="twitter:card" content="summary">
     <meta name="twitter:image" content="https://badasstronaut.github.io/favicon/android-chrome-192x192.png">
+    
+    <meta property="description" content="">
+    <meta property="og:description" content="">
     
     <meta name="twitter:creator" content="">
     <meta name="twitter:site" content="">
@@ -143,7 +142,7 @@ $(document).ready(function(){
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand visible-xs" href="#"></a>
+                <a class="navbar-brand visible-xs" href="#">A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node</a>
                 <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -189,32 +188,82 @@ $(document).ready(function(){
         </div>
     </nav>
 
-<main class="content-box">
-    <h1></h1>
-    <div class="intro">
+<main>
 
-        <div class="avatar">
-            <img class="img-responsive" src="https://badasstronaut.github.io/img/favicon/android-chrome-192x192.png"
-                alt="Whoopsies, this is my bad side!" style="margin: 0 auto;">
-            <h1></h1>
-        </div>
+    <div class="item">
+
+    
+    
+    
+
+    
+    
+      
+    
+
+    <h4><a href="/articles/2018-06-07-unhandled-promise/">A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node</a></h4>
+    <h5>June 7, 2018 - 2 minutes</h5>
+    <h5></h5>
+
+    
+    
+
+</div>
 
 
-        <div style="margin-top: 50px">
-            <h2>Mickey&#39;s personal site</h2>
-        </div>
-    </div>
-    <div class="homepage-content">
-        
-        
+    <br> <div class="text-justify">
 
-<h3 id="thank-you-for-visiting">Thank you for visiting</h3>
+<p>This article was published on <a href="https://medium.com/@kyle.mickey/a-practical-guide-to-avoid-unhandled-promise-rejection-deprecationwarnings-in-node-f9c67634dd2b">medium</a>.</p>
 
-<p>I am a software developer in Colorado. I have several years of automating repetitive tasks, building out APIs, containerizing applications with Docker, learning cutting-edge tech such as graph databases and TensorFlow, and generally being a tech nerd.</p>
+<p>Even experienced developers sometimes miss subtle, but important, points regarding promises and unhandled rejections.</p>
 
-<p>Please feel free to explore this site and contact me via any of the options on the menu bar.</p>
+<p>Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out. You check the logs or console outputs, and you see: <code>(node:127) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.</code></p>
 
-    </div>
+<div class="flex-wrapper">
+    <iframe align-self="center" src="https://giphy.com/embed/ReImZejkBnqYU" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/angry-computer-frustrated-ReImZejkBnqYU"></a></p>
+</div>
+
+<p>But you were so careful! So what happened here!? Let’s take a look.</p>
+
+<h3 id="nested-promises">Nested Promises</h3>
+
+<p>Here we have promises that get some values, then make additional promises.</p>
+
+<script src="https://gist.github.com/BadAsstronaut/d4d30960f1beafdcc55c7bebf201e0a0.js"></script>
+
+<p>The promise on line 4 to <code>getUserInfo</code> never gets caught! Nested promises do not get caught automatically, so you need a catch block for every promise chain!</p>
+
+<h3 id="abusing-async-await-and-try-catch">Abusing Async/Await and Try/Catch</h3>
+
+<p>Async/await in JS is pretty new, but under the hood ‘await’ is still just a promise! And, just like in the example above, each awaited promise needs to be handled and caught. While you can wrap multiple async calls in a single try/catch block, it’s important to make sure that the awaited functions either resolve or reject.</p>
+
+<script src="https://gist.github.com/BadAsstronaut/70a879fe3aca51d89b2b69ea22107e17.js"></script>
+
+<h3 id="defensive-techniques">Defensive Techniques</h3>
+
+<p>As we saw in the first example, a promise that does not resolve or reject does not get handled. Unhandled rejections are bad. This whole issue can be avoided by always returning your promises!</p>
+
+<script src="https://gist.github.com/BadAsstronaut/9d135ec31936d7efc303fe588692fb30.js"></script>
+
+<p>Note that we are only using one promise chain!</p>
+
+<p>Sometimes, you may need additional parameters from outside the promise chain. This can be elegantly handled by currying your functions!</p>
+
+<script src="https://gist.github.com/BadAsstronaut/422e43654eed9476b181aae6cc43f401.js"></script>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>In the near future, node.js will terminate and exit on unhandled promise rejections. I recently watched Ryan Dahl (creator of node) discussing 10 things he regrets about node, and he said something about how obvious it is that an application should terminate when a promise rejection is unhandled.</p>
+
+<p>So, let’s keep our promises and handle rejection well!</p>
+</div>
+
+    
+    
+
+    
+
+    
 
 </main>
 
@@ -240,3 +289,4 @@ $(document).ready(function(){
     </body>
 
 </html>
+
