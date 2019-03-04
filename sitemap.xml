@@ -18,8 +18,13 @@
   </url>
   
   <url>
+    <loc>https://badasstronaut.github.io/about-me/</loc>
+  </url>
+  
+  <url>
     <loc>https://badasstronaut.github.io/articles/</loc>
     <lastmod>2019-03-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>

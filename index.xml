@@ -33,5 +33,15 @@ Even experienced developers sometimes miss subtle, but important, points regardi
 Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out.</description>
     </item>
     
+    <item>
+      <title>About me</title>
+      <link>https://badasstronaut.github.io/about-me/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://badasstronaut.github.io/about-me/</guid>
+      <description>Professional Background We&amp;rsquo;re just gonna skip over the whole education point and jump right into my career.
+I worked as a technical writer for an oil and gas consultancy where we used a lot of data visualizations. After spending a few months clicking, dragging, and keyboard-shortcutting my way around Excel, I felt like the process could be automated. I picked up a programming book, Excel 2010 Power Programming with VBA by John Walkenbach.</description>
+    </item>
+    
   </channel>
 </rss>
