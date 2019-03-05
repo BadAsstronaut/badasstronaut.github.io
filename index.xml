@@ -39,8 +39,7 @@ Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the la
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://badasstronaut.github.io/about-me/</guid>
-      <description>Professional Background We&amp;rsquo;re just gonna skip over the whole education point and jump right into my career.
-I worked as a technical writer for an oil and gas consultancy where we used a lot of data visualizations. After spending a few months clicking, dragging, and keyboard-shortcutting my way around Excel, I felt like the process could be automated. I picked up a programming book, Excel 2010 Power Programming with VBA by John Walkenbach.</description>
+      <description>I see my role as being a problem solver; frameworks and languages are simply tools for creating solutions.  I worked as a technical writer for an oil and gas consultancy where we used a lot of data visualizations. After spending a few months clicking, dragging, and keyboard-shortcutting my way around Excel, I felt like the process could be automated. I picked up a programming book, Excel 2010 Power Programming with VBA by John Walkenbach.</description>
     </item>
     
   </channel>
