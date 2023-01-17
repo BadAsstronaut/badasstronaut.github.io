@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Badasstronaut Solutions</title>
@@ -6,10 +6,25 @@
     <description>Recent content on Badasstronaut Solutions</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://badasstronaut.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing a full REST API using Chat GPT</title>
+      <link>https://badasstronaut.github.io/articles/2023-01-16-joke-api-gpt/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://badasstronaut.github.io/articles/2023-01-16-joke-api-gpt/</guid>
+      <description>Introduction I, like many others in the tech industry, have found myself on the job hunt. Many technical positions require a code sample/project. There are plenty of reasons to wonder how effectively such projects reflect technical talent, or if such projects require an unfair amount of effort from the applicant&amp;hellip; but this is not an article about that. Regardless of personal opinions, these projects provide employers a point-of-reference on a candidate&amp;rsquo;s technical approach.</description>
+    </item>
     
-	<atom:link href="https://badasstronaut.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>Save Time on Your Job Search with ChatGPT</title>
+      <link>https://badasstronaut.github.io/articles/2023-01-07-job-search-gpt/</link>
+      <pubDate>Sat, 07 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://badasstronaut.github.io/articles/2023-01-07-job-search-gpt/</guid>
+      <description>Save time on your job search with ChatGPT DISCLAIMER: Do not use this to lie on resumes or cover letters. ChatGPT is a language model, not a subject matter expert. It&amp;rsquo;s a powerful tool that can act as a contextual templating engine, but not a replacement for human expertise. If you&amp;rsquo;re using ChatGPT to generate job-application content, always carefully edit the outputs for accuracy and add your own voice.
+You&amp;rsquo;ve heard of ChatGPT.</description>
+    </item>
     
     <item>
       <title>Rethinking Dependence on Dependencies</title>
@@ -39,7 +54,9 @@ Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the la
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://badasstronaut.github.io/about-me/</guid>
-      <description>I see my role as being a problem solver; frameworks and languages are simply tools for creating solutions.  I worked as a technical writer for an oil and gas consultancy where we used a lot of data visualizations. After spending a few months clicking, dragging, and keyboard-shortcutting my way around Excel, I felt like the process could be automated. I picked up a programming book, Excel 2010 Power Programming with VBA by John Walkenbach.</description>
+      <description>Thanks for visiting. I am an experienced technologist and generalist with a focus on cloud technologies.
+I enjoy collaborating with awesome teams to solve big problems. With a deep background in cloud infrastructure, identity and access management, and full stack development, I like jumping into whatever problem space needs work.
+Personal I live in Broomfield, CO with my wife Markie, our children Ender and Milan, and our two dogs Jaymo and Onyx.</description>
     </item>
     
   </channel>
