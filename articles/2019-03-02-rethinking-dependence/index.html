@@ -4,11 +4,11 @@
     <title>Rethinking Dependence on Dependencies // Badasstronaut Solutions</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.110.0">
+    <meta name="generator" content="Hugo 0.92.2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Mickey" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="/css/main.min.3c3c186cd62e563ad6e2f00a89dbee656ab912d1d46f856b5605dd0232521e2a.css" />
+    <link rel="stylesheet" href="/css/main.min.6ff2c724358c5915e614ff98b6c2d4113eac50d423232db3c1141a73960f4426.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -25,6 +25,7 @@ Have you ever gone to start a project — even a smaller project — and
 <meta property="og:url" content="https://badasstronaut.github.io/articles/2019-03-02-rethinking-dependence/" /><meta property="article:section" content="articles" />
 <meta property="article:published_time" content="2019-03-02T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-03-02T00:00:00+00:00" />
+
 
 
   </head>
@@ -104,192 +105,192 @@ Have you ever gone to start a project — even a smaller project — and
 </figure>
 
 <p>I haven’t written front-end vanilla JS since ES5. It was a lot easier than configuring a front-end framework; even setting up one I know well or might have scaffolded.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">DomEventHandler</span> <span style="color:#f92672">=</span> (() =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">submitChat</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span> =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">preventDefault</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">10</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">usernameValidation</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#39;hidden&#39;</span>);
-</span></span><span style="display:flex;"><span>            window.<span style="color:#a6e22e">setTimeout</span>(() =&gt; {
-</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">usernameValidation</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#39;hidden&#39;</span>);
-</span></span><span style="display:flex;"><span>            }, <span style="color:#ae81ff">1200</span>);
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">textArea</span>.<span style="color:#a6e22e">value</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">textArea</span>.<span style="color:#a6e22e">value</span>,
-</span></span><span style="display:flex;"><span>        };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">WebSocketHandler</span>.<span style="color:#a6e22e">sendMessage</span>(<span style="color:#a6e22e">message</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">textArea</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">textAreaKeyPress</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span> =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">ctrlKey</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">keyCode</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">KEY_MAP</span>.<span style="color:#a6e22e">ENTER</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">DomEventHandler</span>.<span style="color:#a6e22e">submitChat</span>(<span style="color:#a6e22e">e</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">onFocusWrapper</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">wrapper</span> =&gt; () =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">wrapper</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#39;focus&#39;</span>);
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">onBlurWrapper</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">wrapper</span> =&gt; () =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">wrapper</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#39;focus&#39;</span>);
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">textAreaKeyPress</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">textAreaKeyPress</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">submitChat</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">submitChat</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">onFocusWrapper</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">onBlurWrapper</span>,
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>})();
-</span></span></code></pre></div><p>I decided to build the server with node, but I didn’t want to waste more time configuring an API framework to my preferences; especially for such a small project. I figured I could just use the native http module and handle routes manually. Then, it occurred to me that I didn’t know how! There was a lot of googling, and progress was slow in some ways. Once I understood how it worked, it was trivial to create a request handler that would server up my simple front end.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">DomEventHandler</span> <span style="color:#f92672">=</span> (() =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">submitChat</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span> =&gt; {
+        <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">preventDefault</span>();
+
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">10</span>) {
+            <span style="color:#a6e22e">usernameValidation</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#39;hidden&#39;</span>);
+            window.<span style="color:#a6e22e">setTimeout</span>(() =&gt; {
+                <span style="color:#a6e22e">usernameValidation</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#39;hidden&#39;</span>);
+            }, <span style="color:#ae81ff">1200</span>);
+            <span style="color:#66d9ef">return</span>;
+        }
+
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">textArea</span>.<span style="color:#a6e22e">value</span>) {
+            <span style="color:#66d9ef">return</span>;
+        }
+
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> {
+            <span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span>,
+            <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">textArea</span>.<span style="color:#a6e22e">value</span>,
+        };
+
+        <span style="color:#a6e22e">WebSocketHandler</span>.<span style="color:#a6e22e">sendMessage</span>(<span style="color:#a6e22e">message</span>);
+        <span style="color:#a6e22e">textArea</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+    };
+
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">textAreaKeyPress</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span> =&gt; {
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">ctrlKey</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">keyCode</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">KEY_MAP</span>.<span style="color:#a6e22e">ENTER</span>) {
+            <span style="color:#a6e22e">DomEventHandler</span>.<span style="color:#a6e22e">submitChat</span>(<span style="color:#a6e22e">e</span>);
+        }
+    };
+
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">onFocusWrapper</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">wrapper</span> =&gt; () =&gt; {
+        <span style="color:#a6e22e">wrapper</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#39;focus&#39;</span>);
+    };
+
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">onBlurWrapper</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">wrapper</span> =&gt; () =&gt; {
+        <span style="color:#a6e22e">wrapper</span>.<span style="color:#a6e22e">classList</span>.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#39;focus&#39;</span>);
+    };
+
+    <span style="color:#66d9ef">return</span> {
+        <span style="color:#a6e22e">textAreaKeyPress</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">textAreaKeyPress</span>,
+        <span style="color:#a6e22e">submitChat</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">submitChat</span>,
+        <span style="color:#a6e22e">onFocusWrapper</span>,
+        <span style="color:#a6e22e">onBlurWrapper</span>,
+    };
+})();
+</code></pre></div><p>I decided to build the server with node, but I didn’t want to waste more time configuring an API framework to my preferences; especially for such a small project. I figured I could just use the native http module and handle routes manually. Then, it occurred to me that I didn’t know how! There was a lot of googling, and progress was slow in some ways. Once I understood how it worked, it was trivial to create a request handler that would server up my simple front end.</p>
 <h4 id="indexjs">index.js</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">httpHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./src/httpHanlder&#39;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#a6e22e">httpHandler</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">PORT</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">80</span>;
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#a6e22e">port</span>);
-</span></span></code></pre></div><h4 id="httphandlerjs">httpHandler.js</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;fs&#39;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promisify</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;util&#39;</span>).<span style="color:#a6e22e">promisify</span>;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">readFile</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">promisify</span>(<span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mimeTypesMap</span> <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;.html&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/html&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;.css&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/css&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;.js&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/javascript&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;.png&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;image/png&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;.svg&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;image/svg+xml&#39;</span>,
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">docPath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">url</span> =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;/&#39;</span><span style="color:#a6e22e">The</span> <span style="color:#a6e22e">last</span> <span style="color:#a6e22e">section</span> <span style="color:#66d9ef">of</span> <span style="color:#66d9ef">this</span> <span style="color:#a6e22e">article</span> <span style="color:#a6e22e">has</span> <span style="color:#a6e22e">tutorial</span> <span style="color:#a6e22e">information</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">implementing</span> <span style="color:#a6e22e">websockets</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">vanilla</span> <span style="color:#a6e22e">JS</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">minimalist</span> <span style="color:#a6e22e">node</span> <span style="color:#a6e22e">environment</span>.
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">?</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;../web/index.html&#39;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;../&#39;</span>, <span style="color:#a6e22e">url</span>);
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mimeType</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">file</span> =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ext</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">extname</span>(<span style="color:#a6e22e">file</span>).<span style="color:#a6e22e">toLowerCase</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">mimeTypesMap</span>[<span style="color:#a6e22e">ext</span>];
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">docPath</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">url</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">contentType</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mimeType</span>(<span style="color:#a6e22e">file</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">writeHead</span>(<span style="color:#ae81ff">200</span>, {
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;content-type&#39;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">contentType</span>,
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">write</span>(<span style="color:#66d9ef">await</span> <span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">file</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">end</span>();
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#66d9ef">export</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">handler</span>;
-</span></span></code></pre></div><p>I had initially written a switch statement for the mimeType function, but the object literal seemed more concise and expressive.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">httpHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./src/httpHanlder&#39;</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#a6e22e">httpHandler</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">PORT</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">80</span>;
+<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#a6e22e">port</span>);
+</code></pre></div><h4 id="httphandlerjs">httpHandler.js</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;fs&#39;</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;path&#39;</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promisify</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;util&#39;</span>).<span style="color:#a6e22e">promisify</span>;
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">readFile</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">promisify</span>(<span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>);
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mimeTypesMap</span> <span style="color:#f92672">=</span> {
+    <span style="color:#e6db74">&#39;.html&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/html&#39;</span>,
+    <span style="color:#e6db74">&#39;.css&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/css&#39;</span>,
+    <span style="color:#e6db74">&#39;.js&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;text/javascript&#39;</span>,
+    <span style="color:#e6db74">&#39;.png&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;image/png&#39;</span>,
+    <span style="color:#e6db74">&#39;.svg&#39;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;image/svg+xml&#39;</span>,
+};
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">docPath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">url</span> =&gt; {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">url</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;/&#39;</span><span style="color:#a6e22e">The</span> <span style="color:#a6e22e">last</span> <span style="color:#a6e22e">section</span> <span style="color:#66d9ef">of</span> <span style="color:#66d9ef">this</span> <span style="color:#a6e22e">article</span> <span style="color:#a6e22e">has</span> <span style="color:#a6e22e">tutorial</span> <span style="color:#a6e22e">information</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">implementing</span> <span style="color:#a6e22e">websockets</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">vanilla</span> <span style="color:#a6e22e">JS</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">minimalist</span> <span style="color:#a6e22e">node</span> <span style="color:#a6e22e">environment</span>.
+        <span style="color:#f92672">?</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;../web/index.html&#39;</span>)
+        <span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;../&#39;</span>, <span style="color:#a6e22e">url</span>);
+};
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mimeType</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">file</span> =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ext</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">extname</span>(<span style="color:#a6e22e">file</span>).<span style="color:#a6e22e">toLowerCase</span>();
+
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">mimeTypesMap</span>[<span style="color:#a6e22e">ext</span>];
+};
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">docPath</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">url</span>);
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">contentType</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mimeType</span>(<span style="color:#a6e22e">file</span>);
+
+    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">writeHead</span>(<span style="color:#ae81ff">200</span>, {
+        <span style="color:#e6db74">&#39;content-type&#39;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">contentType</span>,
+    });
+
+    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">write</span>(<span style="color:#66d9ef">await</span> <span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">file</span>));
+    <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">end</span>();
+};
+
+<span style="color:#a6e22e">module</span>.<span style="color:#66d9ef">export</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">handler</span>;
+</code></pre></div><p>I had initially written a switch statement for the mimeType function, but the object literal seemed more concise and expressive.</p>
 <p>At this point, everything was working except for the websocket implementation. I wanted to use the native WebSocketAPI on the front end, so socket.io was a no-go. I decided to timebox using ws; it pretty much just worked.</p>
 <h4 id="websockethanlderjs">websocketHanlder.js</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">httpHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./src/httpHanlder&#39;</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">webSocketHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./src/webSocketHandler&#39;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#a6e22e">httpHandler</span>);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">PORT</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">80</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">webSocketHandler</span>(<span style="color:#a6e22e">server</span>);
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#a6e22e">port</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">httpServer</span> =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ws</span>.<span style="color:#a6e22e">Server</span>({ <span style="color:#a6e22e">server</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">httpServer</span> });
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;connection&#39;</span>, <span style="color:#a6e22e">socket</span> =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;message&#39;</span>, <span style="color:#a6e22e">handleMessage</span>(<span style="color:#a6e22e">server</span>));
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">And</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">webSocketHandler</span> <span style="color:#a6e22e">was</span> <span style="color:#a6e22e">simple</span> <span style="color:#a6e22e">plumbing</span> <span style="color:#a6e22e">between</span> <span style="color:#a6e22e">Redis</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">websocket</span> <span style="color:#a6e22e">events</span><span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ws</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;ws&#39;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">datastore</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./datastore&#39;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chatLogKey</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chat_log&#39;</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handleMessage</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">server</span> =&gt; <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">rawData</span> =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">rawData</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chatLogRaw</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">datastore</span>.<span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">chatLogKey</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chatLog</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">chatLogRaw</span>) <span style="color:#f92672">||</span> [];
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">chatLog</span>.<span style="color:#a6e22e">push</span>({
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">user</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">message</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">datetime</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">new</span> Date().<span style="color:#a6e22e">toISOString</span>(),
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">updatedChatLog</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">chatLog</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">datastore</span>.<span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">chatLogKey</span>, <span style="color:#a6e22e">updatedChatLog</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">clients</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">client</span> =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">readyState</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">ws</span>.<span style="color:#a6e22e">OPEN</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">updatedChatLog</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>};
-</span></span></code></pre></div><p>I only wanted an array of chat messages for data persistence, so I just added redis to docker-compose. Once the messages were being passed between the client and server, it was easy enough to make a rendering function for the front end. ES6 template literals make rendering components from a collection trivial!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">http</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;http&#39;</span>);
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">httpHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./src/httpHanlder&#39;</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">webSocketHandler</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./src/webSocketHandler&#39;</span>);
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">createServer</span>(<span style="color:#a6e22e">httpHandler</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">PORT</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">80</span>;
+
+<span style="color:#a6e22e">webSocketHandler</span>(<span style="color:#a6e22e">server</span>);
+<span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">listen</span>(<span style="color:#a6e22e">port</span>);
+
+<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">httpServer</span> =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ws</span>.<span style="color:#a6e22e">Server</span>({ <span style="color:#a6e22e">server</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">httpServer</span> });
+    <span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;connection&#39;</span>, <span style="color:#a6e22e">socket</span> =&gt; {
+        <span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;message&#39;</span>, <span style="color:#a6e22e">handleMessage</span>(<span style="color:#a6e22e">server</span>));
+    });
+};
+<span style="color:#a6e22e">And</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">webSocketHandler</span> <span style="color:#a6e22e">was</span> <span style="color:#a6e22e">simple</span> <span style="color:#a6e22e">plumbing</span> <span style="color:#a6e22e">between</span> <span style="color:#a6e22e">Redis</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">websocket</span> <span style="color:#a6e22e">events</span><span style="color:#f92672">:</span>
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">ws</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;ws&#39;</span>);
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">datastore</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;./datastore&#39;</span>);
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chatLogKey</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chat_log&#39;</span>;
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handleMessage</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">server</span> =&gt; <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">rawData</span> =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">rawData</span>);
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chatLogRaw</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">datastore</span>.<span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">chatLogKey</span>);
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">chatLog</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">chatLogRaw</span>) <span style="color:#f92672">||</span> [];
+
+    <span style="color:#a6e22e">chatLog</span>.<span style="color:#a6e22e">push</span>({
+        <span style="color:#a6e22e">user</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">user</span>,
+        <span style="color:#a6e22e">message</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">message</span>,
+        <span style="color:#a6e22e">datetime</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">new</span> Date().<span style="color:#a6e22e">toISOString</span>(),
+    });
+
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">updatedChatLog</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">chatLog</span>);
+
+    <span style="color:#a6e22e">datastore</span>.<span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">chatLogKey</span>, <span style="color:#a6e22e">updatedChatLog</span>);
+    <span style="color:#a6e22e">server</span>.<span style="color:#a6e22e">clients</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">client</span> =&gt; {
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">readyState</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">ws</span>.<span style="color:#a6e22e">OPEN</span>) {
+            <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">updatedChatLog</span>);
+        }
+    })
+};
+</code></pre></div><p>I only wanted an array of chat messages for data persistence, so I just added redis to docker-compose. Once the messages were being passed between the client and server, it was easy enough to make a rendering function for the front end. ES6 template literals make rendering components from a collection trivial!</p>
 <h4 id="indexjs-1">index.js</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mapMessagesToChat</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">messages</span> =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">elems</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">messages</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">msg</span> =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isCurrentUser</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">user</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;div class=&#34;message-wrapper</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">isCurrentUser</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">?</span> <span style="color:#e6db74">&#39; current-user&#39;</span> 
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;div class=&#34;message-meta&#34;&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;div class=&#34;meta-user&#34;&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">user</span><span style="color:#e6db74">}</span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;/div&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;div class=&#34;meta-time&#34;&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              </span><span style="color:#e6db74">${</span><span style="color:#66d9ef">new</span> Date(<span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">datetime</span>).<span style="color:#a6e22e">toLocaleString</span>()<span style="color:#e6db74">}</span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            &lt;/div&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;/div&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;div class=&#34;message&#34;&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">message</span><span style="color:#e6db74">}</span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          &lt;/div&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &lt;/div&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        `</span>;
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elems</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#39;&#39;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">scrollTop</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">scrollHeight</span>;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">WebSocketHandler</span> <span style="color:#f92672">=</span> (() =&gt; {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">endpoint</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ws://localhost:3000&#39;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WebSocket</span>(<span style="color:#a6e22e">endpoint</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;message&#39;</span>, <span style="color:#a6e22e">e</span> =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">mapMessagesToChat</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">data</span>));
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sendMessage</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">msg</span>) =&gt; {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">msg</span>));
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">sendMessage</span>,
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>})();
-</span></span></code></pre></div><p>The entire solution only consisted of 10 or so reasonably-sized files; all of the requirements were met, and it felt good to write something truly simple.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mapMessagesToChat</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">messages</span> =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">elems</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">messages</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">msg</span> =&gt; {
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isCurrentUser</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">username</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">user</span>;
+
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">`
+</span><span style="color:#e6db74">        &lt;div class=&#34;message-wrapper</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">isCurrentUser</span>
+            <span style="color:#f92672">?</span> <span style="color:#e6db74">&#39; current-user&#39;</span> 
+            <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&gt;
+</span><span style="color:#e6db74">          &lt;div class=&#34;message-meta&#34;&gt;
+</span><span style="color:#e6db74">            &lt;div class=&#34;meta-user&#34;&gt;
+</span><span style="color:#e6db74">              </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">user</span><span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">            &lt;/div&gt;
+</span><span style="color:#e6db74">            &lt;div class=&#34;meta-time&#34;&gt;
+</span><span style="color:#e6db74">              </span><span style="color:#e6db74">${</span><span style="color:#66d9ef">new</span> Date(<span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">datetime</span>).<span style="color:#a6e22e">toLocaleString</span>()<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">            &lt;/div&gt;
+</span><span style="color:#e6db74">          &lt;/div&gt;
+</span><span style="color:#e6db74">          &lt;div class=&#34;message&#34;&gt;
+</span><span style="color:#e6db74">            </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">message</span><span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">          &lt;/div&gt;
+</span><span style="color:#e6db74">        &lt;/div&gt;
+</span><span style="color:#e6db74">        `</span>;
+    });
+
+    <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">innerHTML</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">elems</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#39;&#39;</span>);
+    <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">scrollTop</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">scrollHeight</span>;
+};
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">WebSocketHandler</span> <span style="color:#f92672">=</span> (() =&gt; {
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">endpoint</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ws://localhost:3000&#39;</span>;
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">WebSocket</span>(<span style="color:#a6e22e">endpoint</span>);
+
+    <span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;message&#39;</span>, <span style="color:#a6e22e">e</span> =&gt; {
+        <span style="color:#a6e22e">mapMessagesToChat</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">data</span>));
+    });
+
+    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sendMessage</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">msg</span>) =&gt; {
+        <span style="color:#a6e22e">socket</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">msg</span>));
+    };
+
+    <span style="color:#66d9ef">return</span> {
+        <span style="color:#a6e22e">sendMessage</span>,
+    }
+})();
+</code></pre></div><p>The entire solution only consisted of 10 or so reasonably-sized files; all of the requirements were met, and it felt good to write something truly simple.</p>
 
     </div>
     <div class="post-footer">

@@ -4,11 +4,11 @@
     <title>Writing a full REST API using Chat GPT // Badasstronaut Solutions</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.110.0">
+    <meta name="generator" content="Hugo 0.92.2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Mickey" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="/css/main.min.3c3c186cd62e563ad6e2f00a89dbee656ab912d1d46f856b5605dd0232521e2a.css" />
+    <link rel="stylesheet" href="/css/main.min.6ff2c724358c5915e614ff98b6c2d4113eac50d423232db3c1141a73960f4426.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -21,6 +21,7 @@
 <meta property="og:url" content="https://badasstronaut.github.io/articles/2023-01-16-joke-api-gpt/" /><meta property="article:section" content="articles" />
 <meta property="article:published_time" content="2023-01-17T00:00:00+00:00" />
 <meta property="article:modified_time" content="2023-01-17T00:00:00+00:00" />
+
 
 
   </head>
@@ -76,564 +77,567 @@
 <p>The resulting implementation is available on <a href="https://github.com/BadAsstronaut/jotd">GitHub</a>.</p>
 <h2 id="getting-started">Getting started</h2>
 <p>I plugged my requirements into ChatGPT:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Build a functional REST API to CRUD on a Joke of the Day. (JOTD)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Requirements
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Build the application using your favorite language
-</span></span><span style="display:flex;"><span>    The JOTD has required fields of “text” and “date” and an optional field called “description”
-</span></span><span style="display:flex;"><span>    API request and response should be JSON
-</span></span></code></pre></div><p>I was not sure what I expected, but ChatGPT provided a great high-level overview in response:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>To build a functional REST API to CRUD on a Joke of the Day (JOTD), you will need to follow these general steps:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Choose a programming language to build the application. Some popular choices for building REST APIs include Python, Java, and JavaScript.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Create a JOTD model with the required fields of &#34;text&#34; and &#34;date&#34;, and an optional field called &#34;description&#34;.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Implement CRUD endpoints for the JOTD, using standard RESTful conventions (e.g. GET for reading, POST for creating, PUT for updating, and DELETE for deleting).
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Use JSON for the request and response formats for the API.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>...
-</span></span><span style="display:flex;"><span>It is important to note that this is a high-level overview of building a REST API, and there will be many details to consider depending on the specific requirements of the project and the programming language you choose.
-</span></span></code></pre></div><p>Not super helpful to implementation, though. So, I asked the machine to <code>joke of the day rest api in python using fastapi</code>. Here&rsquo;s what we got:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Here is an example of how you could build a Joke of the Day (JOTD) REST API in Python using the FastAPI web framework:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Install the required packages:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pip install fastapi
-</span></span><span style="display:flex;"><span>pip install pydantic
-</span></span><span style="display:flex;"><span>pip install sqlalchemy
-</span></span><span style="display:flex;"><span>pip install databases
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Create a JOTD model using Pydantic:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>from pydantic import BaseModel
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>class JOTD(BaseModel):
-</span></span><span style="display:flex;"><span>    text: str
-</span></span><span style="display:flex;"><span>    date: str
-</span></span><span style="display:flex;"><span>    description: str = None
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Create a database connection using SQLAlchemy and Databases:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>from sqlalchemy import create_engine
-</span></span><span style="display:flex;"><span>from sqlalchemy.ext.declarative import declarative_base
-</span></span><span style="display:flex;"><span>from databases import Database
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>DATABASE_URL = &#34;sqlite:///./jotd.db&#34;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>engine = create_engine(DATABASE_URL)
-</span></span><span style="display:flex;"><span>Base = declarative_base()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>class JOTD(Base):
-</span></span><span style="display:flex;"><span>    __tablename__ = &#34;jotd&#34;
-</span></span><span style="display:flex;"><span>    id = Column(Integer, primary_key=True, index=True)
-</span></span><span style="display:flex;"><span>    text = Column(String, index=True)
-</span></span><span style="display:flex;"><span>    date = Column(String, index=True)
-</span></span><span style="display:flex;"><span>    description = Column(String)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Base.metadata.create_all(bind=engine)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>database = Database(DATABASE_URL)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Define CRUD endpoints using FastAPI:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>from fastapi import FastAPI, HTTPException
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app = FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.post(&#34;/jotd&#34;, response_model=JOTD)
-</span></span><span style="display:flex;"><span>async def create_jotd(jotd: JOTD):
-</span></span><span style="display:flex;"><span>    query = jotd.insert().values(text=jotd.text, date=jotd.date, description=jotd.description)
-</span></span><span style="display:flex;"><span>    jotd_id = await database.execute(query)
-</span></span><span style="display:flex;"><span>    jotd = await get_jotd(jotd_id)
-</span></span><span style="display:flex;"><span>    return jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>...
-</span></span></code></pre></div><p>Now this is useful! There are issues, such as poor organization, some structural assumptions, etc&hellip; BUT this is a great way to go from 0 to <em>something</em> very quickly.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Build a functional REST API to CRUD on a Joke of the Day. (JOTD)
+
+Requirements
+
+    Build the application using your favorite language
+    The JOTD has required fields of “text” and “date” and an optional field called “description”
+    API request and response should be JSON
+</code></pre></div><p>I was not sure what I expected, but ChatGPT provided a great high-level overview in response:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">To build a functional REST API to CRUD on a Joke of the Day (JOTD), you will need to follow these general steps:
+
+    Choose a programming language to build the application. Some popular choices for building REST APIs include Python, Java, and JavaScript.
+
+    Create a JOTD model with the required fields of &#34;text&#34; and &#34;date&#34;, and an optional field called &#34;description&#34;.
+
+    Implement CRUD endpoints for the JOTD, using standard RESTful conventions (e.g. GET for reading, POST for creating, PUT for updating, and DELETE for deleting).
+
+    Use JSON for the request and response formats for the API.
+
+...
+It is important to note that this is a high-level overview of building a REST API, and there will be many details to consider depending on the specific requirements of the project and the programming language you choose.
+
+</code></pre></div><p>Not super helpful to implementation, though. So, I asked the machine to <code>joke of the day rest api in python using fastapi</code>. Here&rsquo;s what we got:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Here is an example of how you could build a Joke of the Day (JOTD) REST API in Python using the FastAPI web framework:
+
+    Install the required packages:
+
+pip install fastapi
+pip install pydantic
+pip install sqlalchemy
+pip install databases
+
+    Create a JOTD model using Pydantic:
+
+from pydantic import BaseModel
+
+class JOTD(BaseModel):
+    text: str
+    date: str
+    description: str = None
+
+    Create a database connection using SQLAlchemy and Databases:
+
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from databases import Database
+
+DATABASE_URL = &#34;sqlite:///./jotd.db&#34;
+
+engine = create_engine(DATABASE_URL)
+Base = declarative_base()
+
+class JOTD(Base):
+    __tablename__ = &#34;jotd&#34;
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String, index=True)
+    date = Column(String, index=True)
+    description = Column(String)
+
+Base.metadata.create_all(bind=engine)
+
+database = Database(DATABASE_URL)
+
+    Define CRUD endpoints using FastAPI:
+
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+@app.post(&#34;/jotd&#34;, response_model=JOTD)
+async def create_jotd(jotd: JOTD):
+    query = jotd.insert().values(text=jotd.text, date=jotd.date, description=jotd.description)
+    jotd_id = await database.execute(query)
+    jotd = await get_jotd(jotd_id)
+    return jotd
+
+...
+</code></pre></div><p>Now this is useful! There are issues, such as poor organization, some structural assumptions, etc&hellip; BUT this is a great way to go from 0 to <em>something</em> very quickly.</p>
 <p>I thought there was enough here to get started on the project, so, here we go&hellip;</p>
 <h2 id="implementation">Implementation</h2>
 <p>So, to get started, I created a directory and added an empty <code>README.md</code> and <code>requirements.txt</code>, a <code>src/</code> subdirectory, and a Dockerfile. I already had a FastAPI Dockerfile from a different project, which looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> python:3.10-bullseye</span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install --upgrade pip <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get update <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get install -y python3-brlapi sqlite3 <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> adduser --disabled-login --gecos <span style="color:#e6db74">&#39;&#39;</span> api_user<span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> api_user</span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /home/api_user</span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>api_user:api_user requirements.txt requirements.txt<span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install --user -r requirements.txt<span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">:/home/api_user/.local/bin&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>api_user:api_user src .<span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
-</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;uvicorn&#34;</span>, <span style="color:#e6db74">&#34;main:app&#34;</span>, <span style="color:#e6db74">&#34;--host&#34;</span>, <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>]<span style="color:#960050;background-color:#1e0010">
-</span></span></span></code></pre></div><p>Note that this Dockerfile provisions an <code>api_user</code> so that the API does not run as root. Out of curiosity, I submitted the Dockerfile to ChatGPT3, and here&rsquo;s what we get:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>This is a Dockerfile that can be used to create a containerized version of a Python application. The image is based on the Bullseye version of Python 3.10, and it starts by installing the necessary dependencies such as pip and sqlite3. It then creates a new user called api_user, and sets the working directory to the home directory of the new user. Next it copies the requirements.txt file and installs the dependencies in the container.
-</span></span><span style="display:flex;"><span>It then copies the source code of the application in the container and sets the command to run the application using uvicorn, which is a production-ready ASGI server, and specifies the host to be 0.0.0.0 so that the application can be accessed from outside the container.
-</span></span></code></pre></div><p><img src="https://img.memegenerator.net/instances/68447791.jpg" alt="LGTM Rambo"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> python:3.10-bullseye</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install --upgrade pip <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get update <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> apt-get install -y python3-brlapi sqlite3 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    <span style="color:#f92672">&amp;&amp;</span> adduser --disabled-login --gecos <span style="color:#e6db74">&#39;&#39;</span> api_user<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> api_user</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /home/api_user</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>api_user:api_user requirements.txt requirements.txt<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install --user -r requirements.txt<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">:/home/api_user/.local/bin&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --chown<span style="color:#f92672">=</span>api_user:api_user src .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;uvicorn&#34;</span>, <span style="color:#e6db74">&#34;main:app&#34;</span>, <span style="color:#e6db74">&#34;--host&#34;</span>, <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>Note that this Dockerfile provisions an <code>api_user</code> so that the API does not run as root. Out of curiosity, I submitted the Dockerfile to ChatGPT3, and here&rsquo;s what we get:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">This is a Dockerfile that can be used to create a containerized version of a Python application. The image is based on the Bullseye version of Python 3.10, and it starts by installing the necessary dependencies such as pip and sqlite3. It then creates a new user called api_user, and sets the working directory to the home directory of the new user. Next it copies the requirements.txt file and installs the dependencies in the container.
+It then copies the source code of the application in the container and sets the command to run the application using uvicorn, which is a production-ready ASGI server, and specifies the host to be 0.0.0.0 so that the application can be accessed from outside the container.
+</code></pre></div><p><img src="https://img.memegenerator.net/instances/68447791.jpg" alt="LGTM Rambo"></p>
 <h2 id="collaborating-with-the-robot">Collaborating with the Robot</h2>
 <p>I asked ChatGPT to <code>generate a README for the jotd API.</code> Here&rsquo;s the response (formatting removed for convenience).</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Joke of the Day (JOTD) REST API
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>This is a simple REST API for managing Jokes of the Day (JOTD) built using Python, FastAPI, SQLAlchemy and Databases.
-</span></span><span style="display:flex;"><span>Getting Started
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-</span></span><span style="display:flex;"><span>Prerequisites
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Python 3.8 or later
-</span></span><span style="display:flex;"><span>    Pipenv
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Installing
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Clone the repository
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>git clone https://github.com/your-username/jotd-api.git
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Install the dependencies
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pipenv install
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Run the migrations
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pipenv run alembic upgrade head
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Run the development server
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pipenv run uvicorn main:app --reload
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The API will be available at http://localhost:8000/.
-</span></span><span style="display:flex;"><span>Endpoints
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    POST /jotd: Create a new JOTD
-</span></span><span style="display:flex;"><span>    GET /jotd/{id}: Retrieve a specific JOTD by ID
-</span></span><span style="display:flex;"><span>    PUT /jotd/{id}: Update a specific JOTD by ID
-</span></span><span style="display:flex;"><span>    DELETE /jotd/{id}: Delete a specific JOTD by ID
-</span></span><span style="display:flex;"><span>    GET /jotd: Retrieve a list of all JOTDs
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Built With
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    FastAPI - The web framework used
-</span></span><span style="display:flex;"><span>    SQLAlchemy - Object-Relational Mapper
-</span></span><span style="display:flex;"><span>    Databases - Async ORM
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Authors
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Your name - *Initial
-</span></span></code></pre></div><p>Nice job robot!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Joke of the Day (JOTD) REST API
+
+This is a simple REST API for managing Jokes of the Day (JOTD) built using Python, FastAPI, SQLAlchemy and Databases.
+Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+Prerequisites
+
+    Python 3.8 or later
+    Pipenv
+
+Installing
+
+    Clone the repository
+
+git clone https://github.com/your-username/jotd-api.git
+
+    Install the dependencies
+
+pipenv install
+
+    Run the migrations
+
+pipenv run alembic upgrade head
+
+    Run the development server
+
+pipenv run uvicorn main:app --reload
+
+The API will be available at http://localhost:8000/.
+Endpoints
+
+    POST /jotd: Create a new JOTD
+    GET /jotd/{id}: Retrieve a specific JOTD by ID
+    PUT /jotd/{id}: Update a specific JOTD by ID
+    DELETE /jotd/{id}: Delete a specific JOTD by ID
+    GET /jotd: Retrieve a list of all JOTDs
+
+Built With
+
+    FastAPI - The web framework used
+    SQLAlchemy - Object-Relational Mapper
+    Databases - Async ORM
+
+Authors
+
+    Your name - *Initial
+</code></pre></div><p>Nice job robot!</p>
 <p><img src="data:image/jpeg;base64,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" alt="Robot fistbump"></p>
 <p>Obviously this will need to be edited and updated, but look how much value we get out of having some basic README elements populated.</p>
 <p>Now that I have a README drafted, a Dockerfile in place, and some requirements in my <code>requirements.txt</code>, it&rsquo;s time to ask for some more code!</p>
 <h2 id="iteration-with-my-ai-partner">Iteration with my AI partner</h2>
 <p>I knew we wanted CRUD endpoints, so I asked ChatGPT to <code>generate FastAPI CRUD endpoints for jotd</code>. Here&rsquo;s what we got&hellip;</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> Session
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/jotd&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(jotd: JOTD, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
-</span></span><span style="display:flex;"><span>    db<span style="color:#f92672">.</span>add(jotd)
-</span></span><span style="display:flex;"><span>    db<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>    db<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd</span>(id: int, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
-</span></span><span style="display:flex;"><span>    jotd <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JOTD not found&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd
-</span></span></code></pre></div><p>Obviously, the imports won&rsquo;t work but that&rsquo;s ok. We can wire those in. I am more concerned with having the API endpoints hitting the <code>db</code> object directly. So, I told ChatGPT that I wanted to <code>refactor jotd to follow repository layer conventions</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException
+<span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> Session
+
+app <span style="color:#f92672">=</span> FastAPI()
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>post(<span style="color:#e6db74">&#34;/jotd&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(jotd: JOTD, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
+    db<span style="color:#f92672">.</span>add(jotd)
+    db<span style="color:#f92672">.</span>commit()
+    db<span style="color:#f92672">.</span>refresh(jotd)
+    <span style="color:#66d9ef">return</span> jotd
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd</span>(id: int, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
+    jotd <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)<span style="color:#f92672">.</span>first()
+    <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JOTD not found&#34;</span>)
+    <span style="color:#66d9ef">return</span> jotd
+
+</code></pre></div><p>Obviously, the imports won&rsquo;t work but that&rsquo;s ok. We can wire those in. I am more concerned with having the API endpoints hitting the <code>db</code> object directly. So, I told ChatGPT that I wanted to <code>refactor jotd to follow repository layer conventions</code>.</p>
 <p>Here&rsquo;s what we got:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JOTDRepository</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, db: Session):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db <span style="color:#f92672">=</span> db
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, id: int) <span style="color:#f92672">-&gt;</span> JOTD:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_all</span>(self) <span style="color:#f92672">-&gt;</span> List[JOTD]:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>all()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>add(jotd)
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>merge(jotd)
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete</span>(self, jotd: JOTD):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>delete(jotd)
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/jotd&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(jotd: JOTD, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
-</span></span><span style="display:flex;"><span>    repository <span style="color:#f92672">=</span> JOTDRepository(db)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> repository<span style="color:#f92672">.</span>create(jotd)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd</span>(id: int, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
-</span></span><span style="display:flex;"><span>    repository <span style="color:#f92672">=</span> JOTDRepository(db)
-</span></span><span style="display:flex;"><span>    jotd <span style="color:#f92672">=</span> repository<span style="color:#f92672">.</span>get(id)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JOTD not found&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.put</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_jotd</span>(id: int, jotd: JOTD, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
-</span></span><span style="display:flex;"><span>    repository <span style="color:#f92672">=</span> JOTDRepository(db)
-</span></span><span style="display:flex;"><span>    stored_jotd <span style="color:#f92672">=</span> repository<span style="color:#f92672">.</span>get(id)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> stored_jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JOTD not found&#34;</span>)
-</span></span><span style="display:flex;"><span>    stored_jotd<span style="color:#f92672">.</span>text <span style="color:#f92672">=</span> jotd<span style="color:#f92672">.</span>text
-</span></span><span style="display:flex;"><span>    stored_jotd<span style="color:#f92672">.</span>date <span style="color:#f92672">=</span> jotd<span style="color:#f92672">.</span>date
-</span></span><span style="display:flex;"><span>    stored_jotd<span style="color:#f92672">.</span>description <span style="color:#f92672">=</span> jotd<span style="color:#f92672">.</span>description
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> repository<span style="color:#f92672">.</span>update(stored_jotd)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.delete</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response
-</span></span></code></pre></div><p>Clearly we wouldn&rsquo;t want the repository in the same file as the routes, but this was actually&hellip; helpful.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JOTDRepository</span>:
+    <span style="color:#66d9ef">def</span> __init__(self, db: Session):
+        self<span style="color:#f92672">.</span>db <span style="color:#f92672">=</span> db
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, id: int) <span style="color:#f92672">-&gt;</span> JOTD:
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)<span style="color:#f92672">.</span>first()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_all</span>(self) <span style="color:#f92672">-&gt;</span> List[JOTD]:
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>all()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>add(jotd)
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>commit()
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>refresh(jotd)
+        <span style="color:#66d9ef">return</span> jotd
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>merge(jotd)
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>commit()
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>refresh(jotd)
+        <span style="color:#66d9ef">return</span> jotd
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete</span>(self, jotd: JOTD):
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>delete(jotd)
+        self<span style="color:#f92672">.</span>db<span style="color:#f92672">.</span>commit()
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>post(<span style="color:#e6db74">&#34;/jotd&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(jotd: JOTD, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
+    repository <span style="color:#f92672">=</span> JOTDRepository(db)
+    <span style="color:#66d9ef">return</span> repository<span style="color:#f92672">.</span>create(jotd)
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd</span>(id: int, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
+    repository <span style="color:#f92672">=</span> JOTDRepository(db)
+    jotd <span style="color:#f92672">=</span> repository<span style="color:#f92672">.</span>get(id)
+    <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JOTD not found&#34;</span>)
+    <span style="color:#66d9ef">return</span> jotd
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>put(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>JOTD)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_jotd</span>(id: int, jotd: JOTD, db: Session <span style="color:#f92672">=</span> Depends(get_db)):
+    repository <span style="color:#f92672">=</span> JOTDRepository(db)
+    stored_jotd <span style="color:#f92672">=</span> repository<span style="color:#f92672">.</span>get(id)
+    <span style="color:#66d9ef">if</span> stored_jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">404</span>, detail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;JOTD not found&#34;</span>)
+    stored_jotd<span style="color:#f92672">.</span>text <span style="color:#f92672">=</span> jotd<span style="color:#f92672">.</span>text
+    stored_jotd<span style="color:#f92672">.</span>date <span style="color:#f92672">=</span> jotd<span style="color:#f92672">.</span>date
+    stored_jotd<span style="color:#f92672">.</span>description <span style="color:#f92672">=</span> jotd<span style="color:#f92672">.</span>description
+    <span style="color:#66d9ef">return</span> repository<span style="color:#f92672">.</span>update(stored_jotd)
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>delete(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{id}</span><span style="color:#e6db74">&#34;</span>, response
+</code></pre></div><p>Clearly we wouldn&rsquo;t want the repository in the same file as the routes, but this was actually&hellip; helpful.</p>
 <h2 id="learning-assistant">Learning assistant</h2>
 <p>I don&rsquo;t tend to rely heavily on ORMs; and I tend to use language primatives for data validation. That said, my goal here is to leverage ChatGPT to write an API. So, based on this, I decided to refresh my memory on <a href="https://sqlalchemy.org">SQLAlchemy</a>. I asked <code>What does sqlalchemy declarative_base do?</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>sqlalchemy.ext.declarative.declarative_base() is a function provided by the SQLAlchemy ORM (Object-Relational Mapper) library that creates a base class for declarative models. This base class is then used as a factory for new model classes.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The declarative system allows you to define your database tables and their columns using Python classes, rather than writing raw SQL statements. This makes it easier to maintain and reason about your database schema, and allows for a more pythonic and object-oriented approach to working with databases.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>When you create a new class that inherits from the base class returned by declarative_base(), that class will be automatically mapped to a database table, and its attributes will be mapped to columns in that table.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For example, you can define a JOTD model like this:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>from sqlalchemy.ext.declarative import declarative_base
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Base = declarative_base()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>class JOTD(Base):
-</span></span><span style="display:flex;"><span>    __tablename__ = &#34;jotd&#34;
-</span></span><span style="display:flex;"><span>    id = Column(Integer, primary_key=True, index=True)
-</span></span><span style="display:flex;"><span>    text = Column(String, index=True)
-</span></span><span style="display:flex;"><span>    date = Column(String, index=True)
-</span></span><span style="display:flex;"><span>    description = Column(String, index=True)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>This JOTD class will be mapped to a table named jotd in your database and its attributes will be mapped to columns.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>When you create an instance of this class and add it to a session, SQLAlchemy will automatically create the corresponding rows in the database table, and when you query the table, SQLAlchemy will automatically create instances of the class and populate them with the data from the rows in the table.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The declarative_base() also allows you to create a single place to define common columns like created_at and updated_at which will be shared across all models.
-</span></span></code></pre></div><p>The #1 rule when working with AI: Trust but verify. Hitting the <a href="https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/api.html#sqlalchemy.ext.declarative.declarative_base">docs</a> took a little longer to get to the same summary generated by ChatGPT. Thanks, robo pal!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">sqlalchemy.ext.declarative.declarative_base() is a function provided by the SQLAlchemy ORM (Object-Relational Mapper) library that creates a base class for declarative models. This base class is then used as a factory for new model classes.
+
+The declarative system allows you to define your database tables and their columns using Python classes, rather than writing raw SQL statements. This makes it easier to maintain and reason about your database schema, and allows for a more pythonic and object-oriented approach to working with databases.
+
+When you create a new class that inherits from the base class returned by declarative_base(), that class will be automatically mapped to a database table, and its attributes will be mapped to columns in that table.
+
+For example, you can define a JOTD model like this:
+
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class JOTD(Base):
+    __tablename__ = &#34;jotd&#34;
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String, index=True)
+    date = Column(String, index=True)
+    description = Column(String, index=True)
+
+This JOTD class will be mapped to a table named jotd in your database and its attributes will be mapped to columns.
+
+When you create an instance of this class and add it to a session, SQLAlchemy will automatically create the corresponding rows in the database table, and when you query the table, SQLAlchemy will automatically create instances of the class and populate them with the data from the rows in the table.
+
+The declarative_base() also allows you to create a single place to define common columns like created_at and updated_at which will be shared across all models.
+</code></pre></div><p>The #1 rule when working with AI: Trust but verify. Hitting the <a href="https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/api.html#sqlalchemy.ext.declarative.declarative_base">docs</a> took a little longer to get to the same summary generated by ChatGPT. Thanks, robo pal!</p>
 <h2 id="wiring-it-together-and-fixing-the-style">Wiring it together and fixing the style</h2>
 <p>From my jaunt into the <code>sqlalchemy</code> docs, I knew I wanted to use a <a href="https://docs.sqlalchemy.org/en/13/orm/session_api.html?highlight=sessionmaker#sqlalchemy.orm.session.sessionmaker">sessionmaker</a>. I told ChatGPT to update the repository it created to `add a sessionmaker to the CRUD repository layer:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;Here is an example of how you can create a CRUD repository module using a SessionMaker in SQLAlchemy:&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> Session
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> sessionmaker
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>SessionLocal <span style="color:#f92672">=</span> sessionmaker(autocommit<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, autoflush<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, bind<span style="color:#f92672">=</span>engine)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JOTDRepository</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session:Session
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __enter__(self):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session <span style="color:#f92672">=</span> SessionLocal()
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __exit__(self, exc_type, exc_val, exc_tb):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>close()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, id: int) <span style="color:#f92672">-&gt;</span> JOTD:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_all</span>(self) <span style="color:#f92672">-&gt;</span> List[JOTD]:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>all()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>add(jotd)
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>merge(jotd)
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete</span>(self, jotd: JOTD):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>delete(jotd)
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>commit()
-</span></span></code></pre></div><p>COOL! That will do us for now, so let&rsquo;s think about our models: <code>make a model for jotd that uses the repository</code>. As expected at this point, ChatGPT generated a reasonable class-based model. I prefer a more <a href="https://docs.python.org/3/howto/functional.html">functional style</a>. So, I asked it: <code>use a functional python style to make a model using the repository</code>. I was bowled over when this actually worked!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#39;&#39;&#39;Here is an example of how you can create a CRUD repository module using a SessionMaker in SQLAlchemy:&#39;&#39;&#39;</span>
+
+<span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> Session
+<span style="color:#f92672">from</span> sqlalchemy.orm <span style="color:#f92672">import</span> sessionmaker
+
+SessionLocal <span style="color:#f92672">=</span> sessionmaker(autocommit<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, autoflush<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, bind<span style="color:#f92672">=</span>engine)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JOTDRepository</span>:
+    <span style="color:#66d9ef">def</span> __init__(self):
+        self<span style="color:#f92672">.</span>session:Session
+    <span style="color:#66d9ef">def</span> __enter__(self):
+        self<span style="color:#f92672">.</span>session <span style="color:#f92672">=</span> SessionLocal()
+        <span style="color:#66d9ef">return</span> self
+
+    <span style="color:#66d9ef">def</span> __exit__(self, exc_type, exc_val, exc_tb):
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>close()
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self, id: int) <span style="color:#f92672">-&gt;</span> JOTD:
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> id)<span style="color:#f92672">.</span>first()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_all</span>(self) <span style="color:#f92672">-&gt;</span> List[JOTD]:
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>all()
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>add(jotd)
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>commit()
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>refresh(jotd)
+        <span style="color:#66d9ef">return</span> jotd
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update</span>(self, jotd: JOTD) <span style="color:#f92672">-&gt;</span> JOTD:
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>merge(jotd)
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>commit()
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>refresh(jotd)
+        <span style="color:#66d9ef">return</span> jotd
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete</span>(self, jotd: JOTD):
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>delete(jotd)
+        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>commit()
+</code></pre></div><p>COOL! That will do us for now, so let&rsquo;s think about our models: <code>make a model for jotd that uses the repository</code>. As expected at this point, ChatGPT generated a reasonable class-based model. I prefer a more <a href="https://docs.python.org/3/howto/functional.html">functional style</a>. So, I asked it: <code>use a functional python style to make a model using the repository</code>. I was bowled over when this actually worked!</p>
 <h2 id="getting-the-ai-to-call-my-code">Getting the AI to call my code</h2>
 <p>From here, I spent a little time making a <code>db.py</code> file for the respository. The elements it needed had already been provided by ChatGPT in the context of the repo module, so after I had it hashed out I showed ChatGPT my <code>db.py</code> module.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>here&#39;s a python db.py file
-</span></span><span style="display:flex;"><span>&#39;&#39;&#39;
-</span></span><span style="display:flex;"><span>Creates databases and connection object
-</span></span><span style="display:flex;"><span>&#39;&#39;&#39;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>import os
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>from sqlalchemy import create_engine, Column, Integer, String
-</span></span><span style="display:flex;"><span>from sqlalchemy.orm import declarative_base, sessionmaker
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>database_url = os.getenv(&#39;DATABASE_URL&#39;, &#39;sqlite:///jotd.db&#39;)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>engine = create_engine(database_url)
-</span></span><span style="display:flex;"><span>Base = declarative_base()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>class JOTD(Base):
-</span></span><span style="display:flex;"><span>    &#39;&#39;&#39; Joke of the day DB table &#39;&#39;&#39;
-</span></span><span style="display:flex;"><span>    __tablename__ = &#39;jotd&#39;
-</span></span><span style="display:flex;"><span>    id = Column(Integer, primary_key=True, index=True)
-</span></span><span style="display:flex;"><span>    text = Column(String)
-</span></span><span style="display:flex;"><span>    date = Column(String, index=True)
-</span></span><span style="display:flex;"><span>    description = Column(String)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Base.metadata.create_all(engine)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Session = sessionmaker(bind=engine)
-</span></span></code></pre></div><p>From this input, ChatGPT provided the following description:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>This is a Python module that creates a database connection and a JOTD model using SQLAlchemy, an ORM (Object-Relational Mapper) library for Python.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>It starts by importing the necessary modules from SQLAlchemy, including the create_engine, Column, Integer, String and declarative_base modules.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Then it sets the database_url variable to either the value of the DATABASE_URL environment variable or a default SQLite URL. This allows the application to be run locally using SQLite or on a remote server using any other database.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The engine variable is then created using the create_engine method, which takes the database_url as a parameter.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>A Base variable is defined using the declarative_base method provided by SQLAlchemy. This Base variable will be used as a factory for new model classes.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The JOTD class is defined, which inherits from the Base variable. It has 4 attributes, id, text, date, description which will be mapped to columns in the jotd table when the table is created.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The Base.metadata.create_all(engine) method creates all the tables defined in the model classes that inherit from Base.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Finally, a Session variable is defined using the sessionmaker function provided by SQLAlchemy. This variable is bound to the engine variable and will be used to create a new session for each request.
-</span></span></code></pre></div><p>I <em>literally</em> could not have said it better myself. Now that ChatGPT &ldquo;knows&rdquo; about my <code>db.py</code> file, I instructed it: <code>using a functional python style, create a jotd.py repository file that uses db.py</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">here&#39;s a python db.py file
+&#39;&#39;&#39;
+Creates databases and connection object
+&#39;&#39;&#39;
+
+import os
+
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+database_url = os.getenv(&#39;DATABASE_URL&#39;, &#39;sqlite:///jotd.db&#39;)
+
+engine = create_engine(database_url)
+Base = declarative_base()
+
+
+class JOTD(Base):
+    &#39;&#39;&#39; Joke of the day DB table &#39;&#39;&#39;
+    __tablename__ = &#39;jotd&#39;
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String)
+    date = Column(String, index=True)
+    description = Column(String)
+
+
+Base.metadata.create_all(engine)
+
+Session = sessionmaker(bind=engine)
+</code></pre></div><p>From this input, ChatGPT provided the following description:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">This is a Python module that creates a database connection and a JOTD model using SQLAlchemy, an ORM (Object-Relational Mapper) library for Python.
+
+It starts by importing the necessary modules from SQLAlchemy, including the create_engine, Column, Integer, String and declarative_base modules.
+
+Then it sets the database_url variable to either the value of the DATABASE_URL environment variable or a default SQLite URL. This allows the application to be run locally using SQLite or on a remote server using any other database.
+
+The engine variable is then created using the create_engine method, which takes the database_url as a parameter.
+
+A Base variable is defined using the declarative_base method provided by SQLAlchemy. This Base variable will be used as a factory for new model classes.
+
+The JOTD class is defined, which inherits from the Base variable. It has 4 attributes, id, text, date, description which will be mapped to columns in the jotd table when the table is created.
+
+The Base.metadata.create_all(engine) method creates all the tables defined in the model classes that inherit from Base.
+
+Finally, a Session variable is defined using the sessionmaker function provided by SQLAlchemy. This variable is bound to the engine variable and will be used to create a new session for each request.
+</code></pre></div><p>I <em>literally</em> could not have said it better myself. Now that ChatGPT &ldquo;knows&rdquo; about my <code>db.py</code> file, I instructed it: <code>using a functional python style, create a jotd.py repository file that uses db.py</code>.</p>
 <p>Here&rsquo;s the output:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Tuple, List
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> db <span style="color:#f92672">import</span> Session, JOTD
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(text: str, date: str, description: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
-</span></span><span style="display:flex;"><span>    session <span style="color:#f92672">=</span> Session()
-</span></span><span style="display:flex;"><span>    jotd <span style="color:#f92672">=</span> JOTD(text<span style="color:#f92672">=</span>text, date<span style="color:#f92672">=</span>date, description<span style="color:#f92672">=</span>description)
-</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>add(jotd)
-</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>    session<span style="color:#f92672">.</span>close()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd, HTTP_CREATED
-</span></span></code></pre></div><p>CANCEL! We want to use <code>with</code> syntax! So we tell the robot: <code>using a functional python style, create a jotd.py repository file that uses db.py with Session() as session</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Here is an example of how you can use a functional programming style to create a JOTD repository using the JOTD model defined in db.py, with session management:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Tuple, List
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> db <span style="color:#f92672">import</span> Session, JOTD
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(text: str, date: str, description: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
-</span></span><span style="display:flex;"><span>        jotd <span style="color:#f92672">=</span> JOTD(text<span style="color:#f92672">=</span>text, date<span style="color:#f92672">=</span>date, description<span style="color:#f92672">=</span>description)
-</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>add(jotd)
-</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>refresh(jotd)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd, HTTP_CREATED
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd</span>(jotd_id: int) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
-</span></span><span style="display:flex;"><span>        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> jotd_id)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_jotd</span>(jotd_id: int, text: str, date: str, description: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
-</span></span><span style="display:flex;"><span>        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> jotd_id)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
-</span></span><span style="display:flex;"><span>        jotd<span style="color:#f92672">.</span>text <span style="color:#f92672">=</span> text
-</span></span><span style="display:flex;"><span>        jotd<span style="color:#f92672">.</span>date <span style="color:#f92672">=</span> date
-</span></span><span style="display:flex;"><span>        jotd<span style="color:#f92672">.</span>description <span style="color:#f92672">=</span> description
-</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_jotd</span>(jotd_id: int) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
-</span></span><span style="display:flex;"><span>        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> jotd_id)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
-</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>delete(jotd)
-</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span>commit()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">This JOTD repository defines the CRUD(Create, Read, Update and Delete) operations for JOTD model and uses the Session object from db.py in a functional way. It opens and closes a new session for each request within the context of with Session() as session: and session.close() respectively.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">It also returns HTTP status codes along with the results of operations, which can be useful for handling errors and responses in your application.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span></code></pre></div><p>Well, that will do! But since this is a joke of the <strong>DAY</strong>, we need to get the joke by date! I asked ChatGPT <code>update read_jotd to get the jotd by date</code>; it had no difficulties:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd_by_date</span>(date: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
-</span></span><span style="display:flex;"><span>        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>date <span style="color:#f92672">==</span> date)<span style="color:#f92672">.</span>first()
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
-</span></span></code></pre></div><h2 id="generating-its-own-references">Generating its own references</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Tuple, List
+
+<span style="color:#f92672">from</span> db <span style="color:#f92672">import</span> Session, JOTD
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(text: str, date: str, description: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
+    session <span style="color:#f92672">=</span> Session()
+    jotd <span style="color:#f92672">=</span> JOTD(text<span style="color:#f92672">=</span>text, date<span style="color:#f92672">=</span>date, description<span style="color:#f92672">=</span>description)
+    session<span style="color:#f92672">.</span>add(jotd)
+    session<span style="color:#f92672">.</span>commit()
+    session<span style="color:#f92672">.</span>refresh(jotd)
+    session<span style="color:#f92672">.</span>close()
+    <span style="color:#66d9ef">return</span> jotd, HTTP_CREATED
+</code></pre></div><p>CANCEL! We want to use <code>with</code> syntax! So we tell the robot: <code>using a functional python style, create a jotd.py repository file that uses db.py with Session() as session</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">Here is an example of how you can use a functional programming style to create a JOTD repository using the JOTD model defined in db.py, with session management:
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+
+<span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Tuple, List
+
+<span style="color:#f92672">from</span> db <span style="color:#f92672">import</span> Session, JOTD
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(text: str, date: str, description: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
+    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
+        jotd <span style="color:#f92672">=</span> JOTD(text<span style="color:#f92672">=</span>text, date<span style="color:#f92672">=</span>date, description<span style="color:#f92672">=</span>description)
+        session<span style="color:#f92672">.</span>add(jotd)
+        session<span style="color:#f92672">.</span>commit()
+        session<span style="color:#f92672">.</span>refresh(jotd)
+    <span style="color:#66d9ef">return</span> jotd, HTTP_CREATED
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd</span>(jotd_id: int) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
+    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
+        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> jotd_id)<span style="color:#f92672">.</span>first()
+        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
+    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_jotd</span>(jotd_id: int, text: str, date: str, description: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
+    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
+        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> jotd_id)<span style="color:#f92672">.</span>first()
+        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
+        jotd<span style="color:#f92672">.</span>text <span style="color:#f92672">=</span> text
+        jotd<span style="color:#f92672">.</span>date <span style="color:#f92672">=</span> date
+        jotd<span style="color:#f92672">.</span>description <span style="color:#f92672">=</span> description
+        session<span style="color:#f92672">.</span>commit()
+    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_jotd</span>(jotd_id: int) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
+    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
+        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>id <span style="color:#f92672">==</span> jotd_id)<span style="color:#f92672">.</span>first()
+        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
+        session<span style="color:#f92672">.</span>delete(jotd)
+        session<span style="color:#f92672">.</span>commit()
+    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
+
+<span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">This JOTD repository defines the CRUD(Create, Read, Update and Delete) operations for JOTD model and uses the Session object from db.py in a functional way. It opens and closes a new session for each request within the context of with Session() as session: and session.close() respectively.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">It also returns HTTP status codes along with the results of operations, which can be useful for handling errors and responses in your application.
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+</code></pre></div><p>Well, that will do! But since this is a joke of the <strong>DAY</strong>, we need to get the joke by date! I asked ChatGPT <code>update read_jotd to get the jotd by date</code>; it had no difficulties:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_jotd_by_date</span>(date: str) <span style="color:#f92672">-&gt;</span> Tuple[JOTD, int]:
+    <span style="color:#66d9ef">with</span> Session() <span style="color:#66d9ef">as</span> session:
+        jotd <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>query(JOTD)<span style="color:#f92672">.</span>filter(JOTD<span style="color:#f92672">.</span>date <span style="color:#f92672">==</span> date)<span style="color:#f92672">.</span>first()
+        <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, HTTP_NOT_FOUND
+    <span style="color:#66d9ef">return</span> jotd, HTTP_OK
+</code></pre></div><h2 id="generating-its-own-references">Generating its own references</h2>
 <p>I decided to follow its recommended convention of using HTTP codes across layers. This isn&rsquo;t my -generated code.</p>
 <p>I asked ChatGPT to <code>create a globals.py file that hydrates the HTTP codes</code>. It gave me:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;Here is an example of how you can create a globals.py file that defines the HTTP status codes as global constants:&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>HTTP_OK <span style="color:#f92672">=</span> <span style="color:#ae81ff">200</span>
-</span></span><span style="display:flex;"><span>HTTP_CREATED <span style="color:#f92672">=</span> <span style="color:#ae81ff">201</span>
-</span></span><span style="display:flex;"><span>HTTP_NO_CONTENT <span style="color:#f92672">=</span> <span style="color:#ae81ff">204</span>
-</span></span><span style="display:flex;"><span>HTTP_BAD_REQUEST <span style="color:#f92672">=</span> <span style="color:#ae81ff">400</span>
-</span></span><span style="display:flex;"><span>HTTP_UNAUTHORIZED <span style="color:#f92672">=</span> <span style="color:#ae81ff">401</span>
-</span></span><span style="display:flex;"><span>HTTP_FORBIDDEN <span style="color:#f92672">=</span> <span style="color:#ae81ff">403</span>
-</span></span><span style="display:flex;"><span>HTTP_NOT_FOUND <span style="color:#f92672">=</span> <span style="color:#ae81ff">404</span>
-</span></span><span style="display:flex;"><span>HTTP_INTERNAL_SERVER_ERROR <span style="color:#f92672">=</span> <span style="color:#ae81ff">500</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">You can use these constants in your application to set the HTTP status code of the response. For example, in the create_jotd function of the JOTD repository, you can return jotd, HTTP_CREATED to indicate that the JOTD was successfully created.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">You can also add other HTTP status codes that you may need in your application to this file.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">It&#39;s important to note that this file should be imported and used in all the modules of your application that need to use the HTTP status codes.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span></code></pre></div><h2 id="adding-exception-handling">Adding exception handling</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#39;&#39;&#39;Here is an example of how you can create a globals.py file that defines the HTTP status codes as global constants:&#39;&#39;&#39;</span>
+
+HTTP_OK <span style="color:#f92672">=</span> <span style="color:#ae81ff">200</span>
+HTTP_CREATED <span style="color:#f92672">=</span> <span style="color:#ae81ff">201</span>
+HTTP_NO_CONTENT <span style="color:#f92672">=</span> <span style="color:#ae81ff">204</span>
+HTTP_BAD_REQUEST <span style="color:#f92672">=</span> <span style="color:#ae81ff">400</span>
+HTTP_UNAUTHORIZED <span style="color:#f92672">=</span> <span style="color:#ae81ff">401</span>
+HTTP_FORBIDDEN <span style="color:#f92672">=</span> <span style="color:#ae81ff">403</span>
+HTTP_NOT_FOUND <span style="color:#f92672">=</span> <span style="color:#ae81ff">404</span>
+HTTP_INTERNAL_SERVER_ERROR <span style="color:#f92672">=</span> <span style="color:#ae81ff">500</span>
+
+<span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">You can use these constants in your application to set the HTTP status code of the response. For example, in the create_jotd function of the JOTD repository, you can return jotd, HTTP_CREATED to indicate that the JOTD was successfully created.
+</span><span style="color:#e6db74">You can also add other HTTP status codes that you may need in your application to this file.
+</span><span style="color:#e6db74">It&#39;s important to note that this file should be imported and used in all the modules of your application that need to use the HTTP status codes.
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+</code></pre></div><h2 id="adding-exception-handling">Adding exception handling</h2>
 <p>Since there is so little business logic, we&rsquo;re going to skip a discussion on the <code>models</code> for this project. I observed that we were lacking error handling on the <code>repository</code> layer. To redress this, without adding a lot of code, we can use a Python <a href="https://peps.python.org/pep-0318/">decorator</a>. To fast-track the process, I asked ChatGPT: <code>decorator to wrap exception handler for internal server errors</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Here&#39;s an example of a Python decorator that can be used to wrap a function and handle internal server errors (HTTP status code 500) that may occur within that function:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Callable
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_exceptions</span>(func: Callable) <span style="color:#f92672">-&gt;</span> Callable:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> func(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>, detail<span style="color:#f92672">=</span>str(e))
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> wrapper
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>You can then use this decorator to wrap the functions that you want to handle the exception <span style="color:#66d9ef">for</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@handle_exceptions</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(jotd: JOTDCreate):
-</span></span><span style="display:flex;"><span>    jotd, code <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> create_jotd(jotd<span style="color:#f92672">.</span>text, jotd<span style="color:#f92672">.</span>date, jotd<span style="color:#f92672">.</span>description)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> jotd<span style="color:#f92672">.</span>id <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">None</span>, code
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">This will catch any exception that occurs in the create_jotd function, and raise a new HTTPException with a status code of 500 and the error message as the detail.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">It&#39;s also good practice to log the exception message for debugging purposes.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">You can use python built-in logging module to log the exception and its traceback.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span></code></pre></div><p>Of course, AI has its limitations. My implementation ended up looking like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">internal_err_handler</span>(func):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Decorator that handles uncaught errors and returns None and an error code.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@wraps</span>(func)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> func(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> ex:
-</span></span><span style="display:flex;"><span>            logging<span style="color:#f92672">.</span>exception(ex)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, globals<span style="color:#f92672">.</span>HTTP_INTERNAL_SERVER_ERROR
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> wrapper
-</span></span></code></pre></div><p><a href="https://docs.python.org/3/library/functools.html#functools.wraps">FuncTools wraps</a> ensures the name of the function remains referenced by the original function name. Compared to the original implementation, I was suprised the wrapper function did not reference the <code>HTTP_INTERNAL_SERVER_ERROR</code> constant.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">Here&#39;s an example of a Python decorator that can be used to wrap a function and handle internal server errors (HTTP status code 500) that may occur within that function:
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+
+<span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Callable
+<span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> HTTPException
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_exceptions</span>(func: Callable) <span style="color:#f92672">-&gt;</span> Callable:
+    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#66d9ef">try</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">await</span> func(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+            <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>, detail<span style="color:#f92672">=</span>str(e))
+    <span style="color:#66d9ef">return</span> wrapper
+
+You can then use this decorator to wrap the functions that you want to handle the exception <span style="color:#66d9ef">for</span>
+
+<span style="color:#a6e22e">@handle_exceptions</span>
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_jotd</span>(jotd: JOTDCreate):
+    jotd, code <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> create_jotd(jotd<span style="color:#f92672">.</span>text, jotd<span style="color:#f92672">.</span>date, jotd<span style="color:#f92672">.</span>description)
+    <span style="color:#66d9ef">return</span> jotd<span style="color:#f92672">.</span>id <span style="color:#66d9ef">if</span> jotd <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">None</span>, code
+
+<span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">This will catch any exception that occurs in the create_jotd function, and raise a new HTTPException with a status code of 500 and the error message as the detail.
+</span><span style="color:#e6db74">It&#39;s also good practice to log the exception message for debugging purposes.
+</span><span style="color:#e6db74">You can use python built-in logging module to log the exception and its traceback.
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+</code></pre></div><p>Of course, AI has its limitations. My implementation ended up looking like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">internal_err_handler</span>(func):
+    <span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">    Decorator that handles uncaught errors and returns None and an error code.
+</span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+    <span style="color:#a6e22e">@wraps</span>(func)
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#66d9ef">try</span>:
+            <span style="color:#66d9ef">return</span> func(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+        <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> ex:
+            logging<span style="color:#f92672">.</span>exception(ex)
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>, globals<span style="color:#f92672">.</span>HTTP_INTERNAL_SERVER_ERROR
+    <span style="color:#66d9ef">return</span> wrapper
+</code></pre></div><p><a href="https://docs.python.org/3/library/functools.html#functools.wraps">FuncTools wraps</a> ensures the name of the function remains referenced by the original function name. Compared to the original implementation, I was suprised the wrapper function did not reference the <code>HTTP_INTERNAL_SERVER_ERROR</code> constant.</p>
 <h2 id="regenerating-the-routes">Regenerating the routes</h2>
 <p>Given all the iteration and updates to the repository and models, I thought it would be cool to feed the code back into GPT and have it regenerate the FastAPI routes. After feeding in my model file, ChatGPT replied:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>This models.py file defines functions that act as a layer between the API and the repository module, which handles the interactions with the database.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The functions in this file take input in the form of plain Python objects (e.g. JOTDInput) and use the repository functions to perform CRUD operations on the Joke of the Day data.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>For example, the create_jotd() function takes a JOTDInput object as input, and passes its properties (text, date, description) to the create_jotd() function in the repository module to create a new Joke of the Day
-</span></span></code></pre></div><p>After this, I wrote: <code>Create a fast API controller that implementes the jotd models</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">This models.py file defines functions that act as a layer between the API and the repository module, which handles the interactions with the database.
+
+The functions in this file take input in the form of plain Python objects (e.g. JOTDInput) and use the repository functions to perform CRUD operations on the Joke of the Day data.
+
+For example, the create_jotd() function takes a JOTDInput object as input, and passes its properties (text, date, description) to the create_jotd() function in the repository module to create a new Joke of the Day
+</code></pre></div><p>After this, I wrote: <code>Create a fast API controller that implementes the jotd models</code></p>
 <p>Reply:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Here is an example of how you could create a FastAPI controller that implements the JOTD models:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> models <span style="color:#f92672">import</span> JOTD, create_jotd, get_jotd_by_id, get_jotd_by_date, update_jotd, delete_jotd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JOTDInput</span>(BaseModel):
-</span></span><span style="display:flex;"><span>    text: str
-</span></span><span style="display:flex;"><span>    date: str
-</span></span><span style="display:flex;"><span>    description: str <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/jotd/create&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_joke</span>(jotd: JOTDInput):
-</span></span><span style="display:flex;"><span>    new_jotd, code <span style="color:#f92672">=</span> create_jotd(jotd)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">201</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: new_jotd}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{jotd_id}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_joke</span>(jotd_id: int):
-</span></span><span style="display:flex;"><span>    jotd, code <span style="color:#f92672">=</span> get_jotd_by_id(jotd_id)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: jotd}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/jotd/date/</span><span style="color:#e6db74">{date}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_joke_date</span>(date: str):
-</span></span><span style="display:flex;"><span>    jotd, code <span style="color:#f92672">=</span> get_jotd_by_date(date)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: jotd}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.put</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{jotd_id}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_joke</span>(jotd_id: int, jotd: JOTDInput):
-</span></span><span style="display:flex;"><span>    updated_jotd, code <span style="color:#f92672">=</span> update_jotd(jotd_id, jotd)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: updated_jotd}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.delete</span>(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{jotd_id}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_joke</span>(jotd_id: int):
-</span></span><span style="display:flex;"><span>    _, code <span style="color:#f92672">=</span> delete_jotd(jotd_id)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;jotd deleted&#34;</span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">This example defines a FastAPI app and creates several endpoints, each of which corresponds to a CRUD operation for the Joke of the Day data. These endpoints use the functions from the models module to perform the corresponding operations on the Joke of the Day data. The JOTDInput class is used to define the request payloads for the create and update endpoints.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span></code></pre></div><p>I ended up making a lot of iterations and updates from here, and you can see the final product on <a href="https://github.com/BadAsstronaut/jotd">github</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">Here is an example of how you could create a FastAPI controller that implements the JOTD models:
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+
+<span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI, HTTPException
+<span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel
+
+<span style="color:#f92672">from</span> models <span style="color:#f92672">import</span> JOTD, create_jotd, get_jotd_by_id, get_jotd_by_date, update_jotd, delete_jotd
+
+app <span style="color:#f92672">=</span> FastAPI()
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JOTDInput</span>(BaseModel):
+    text: str
+    date: str
+    description: str <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>post(<span style="color:#e6db74">&#34;/jotd/create&#34;</span>)
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_joke</span>(jotd: JOTDInput):
+    new_jotd, code <span style="color:#f92672">=</span> create_jotd(jotd)
+    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">201</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: new_jotd}
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{jotd_id}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_joke</span>(jotd_id: int):
+    jotd, code <span style="color:#f92672">=</span> get_jotd_by_id(jotd_id)
+    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: jotd}
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;/jotd/date/</span><span style="color:#e6db74">{date}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_joke_date</span>(date: str):
+    jotd, code <span style="color:#f92672">=</span> get_jotd_by_date(date)
+    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: jotd}
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>put(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{jotd_id}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_joke</span>(jotd_id: int, jotd: JOTDInput):
+    updated_jotd, code <span style="color:#f92672">=</span> update_jotd(jotd_id, jotd)
+    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;jotd&#34;</span>: updated_jotd}
+
+<span style="color:#a6e22e">@app</span><span style="color:#f92672">.</span>delete(<span style="color:#e6db74">&#34;/jotd/</span><span style="color:#e6db74">{jotd_id}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">delete_joke</span>(jotd_id: int):
+    _, code <span style="color:#f92672">=</span> delete_jotd(jotd_id)
+    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
+        <span style="color:#66d9ef">raise</span> HTTPException(status_code<span style="color:#f92672">=</span>code)
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;jotd deleted&#34;</span>}
+
+<span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">This example defines a FastAPI app and creates several endpoints, each of which corresponds to a CRUD operation for the Joke of the Day data. These endpoints use the functions from the models module to perform the corresponding operations on the Joke of the Day data. The JOTDInput class is used to define the request payloads for the create and update endpoints.
+</span><span style="color:#e6db74">&#39;&#39;&#39;</span>
+</code></pre></div><p>I ended up making a lot of iterations and updates from here, and you can see the final product on <a href="https://github.com/BadAsstronaut/jotd">github</a>.</p>
 <h2 id="final-thoughts-and-conclusions">Final thoughts and conclusions</h2>
 <p>This differs from my usual approach to building software. For simple CRUD/POC apps, I tend to minimize dependencies. I probably would have implemented <a href="https://docs.python.org/3/library/sqlite3.html?highlight=sqlite#module-sqlite3">sqlite</a> and passed around dictionaries. The object of these assignments is to assess the efficiency of an engineer, as well as style. I like necessary-and-sufficient dependency management, etc. By implementing the AI-generated code, I feel like I was able to deliver a more feature-complete solution than I would have been able to with my usual approach.</p>
 <p>This is far from a &ldquo;perfect&rdquo; solution. I would go back and add <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a> format enforcement for the <code>date</code> field; I would add some business logic around jokes and whether they can be duplicated/associated with multiple dates. I don&rsquo;t especially love using HTTP codes in the <code>repository</code> layer. Despite all of these issues, we were able to <em>quickly</em> generate a working API that satisfied all of the requirements. The solution is portable and can connect to different databases. All-in-all I would call this iterative development experience a big win.</p>
 <p>So far, AI tools show some good generative capacity but lack the ability to string the snippets into a bigger picture. Being able to quickly template and generate code which I can modify to my needs enables me to move a lot faster.</p>
 <h2 id="chat-gpts-final-thoughts">Chat GPT&rsquo;s final thoughts</h2>
 <p>Finally, I asked ChatGPT to write an article about using ChatGPT to write a REST API. Here&rsquo;s what we got.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext"><span style="display:flex;"><span>Recently, the field of natural language processing has seen a significant advancement with the release of GPT-3 (Generative Pre-trained Transformer 3) by OpenAI. GPT-3 is a language model that can generate human-like text based on a given prompt, making it a powerful tool for various natural language processing tasks.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>One of the areas where GPT-3 can be particularly useful is in the development of REST APIs. REST (Representational State Transfer) APIs are a way for different systems to communicate with each other over the internet, and are commonly used for web-based applications.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>One way that GPT-3 can help in the development of a REST API is by generating code snippets for various parts of the API. For example, it can generate code for the routes, models, and controllers of an API. This can significantly speed up the development process as it eliminates the need to manually write repetitive code.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Another way that GPT-3 can help in the development of a REST API is by providing suggestions for best practices and design patterns. For example, it can suggest how to structure the API&#39;s routes, how to handle errors and exceptions, and how to implement security features. This can be particularly useful for developers who are new to API development, as it can help them to learn and understand the best practices quickly.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>GPT-3 can also be used to generate documentation for the API. This can include documentation for the API&#39;s endpoints, parameters, and responses, as well as examples of how to use the API. This can save a lot of time and effort for the developers, as they do not have to manually write the documentation.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>In addition to these benefits, GPT-3 can also be used to generate test cases for the API. This can help to ensure that the API is working correctly and that it is robust enough to handle different types of inputs and edge cases.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>In conclusion, GPT-3 can be a powerful tool for the development of REST APIs in Python. It can generate code snippets, provide suggestions for best practices and design patterns, generate documentation, and generate test cases. This can significantly speed up the development process and help to ensure that the API is robust and well-documented. However, it is important to note that GPT-3 is not a substitute for a developer&#39;s expertise, but rather a tool to help them in their work.
-</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Recently, the field of natural language processing has seen a significant advancement with the release of GPT-3 (Generative Pre-trained Transformer 3) by OpenAI. GPT-3 is a language model that can generate human-like text based on a given prompt, making it a powerful tool for various natural language processing tasks.
+
+One of the areas where GPT-3 can be particularly useful is in the development of REST APIs. REST (Representational State Transfer) APIs are a way for different systems to communicate with each other over the internet, and are commonly used for web-based applications.
+
+One way that GPT-3 can help in the development of a REST API is by generating code snippets for various parts of the API. For example, it can generate code for the routes, models, and controllers of an API. This can significantly speed up the development process as it eliminates the need to manually write repetitive code.
+
+Another way that GPT-3 can help in the development of a REST API is by providing suggestions for best practices and design patterns. For example, it can suggest how to structure the API&#39;s routes, how to handle errors and exceptions, and how to implement security features. This can be particularly useful for developers who are new to API development, as it can help them to learn and understand the best practices quickly.
+
+GPT-3 can also be used to generate documentation for the API. This can include documentation for the API&#39;s endpoints, parameters, and responses, as well as examples of how to use the API. This can save a lot of time and effort for the developers, as they do not have to manually write the documentation.
+
+In addition to these benefits, GPT-3 can also be used to generate test cases for the API. This can help to ensure that the API is working correctly and that it is robust enough to handle different types of inputs and edge cases.
+
+In conclusion, GPT-3 can be a powerful tool for the development of REST APIs in Python. It can generate code snippets, provide suggestions for best practices and design patterns, generate documentation, and generate test cases. This can significantly speed up the development process and help to ensure that the API is robust and well-documented. However, it is important to note that GPT-3 is not a substitute for a developer&#39;s expertise, but rather a tool to help them in their work.
+</code></pre></div>
     </div>
     <div class="post-footer">
       
