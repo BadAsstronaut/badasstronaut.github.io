@@ -1,100 +1,74 @@
-<!doctype html>
-<html lang="en-us">
-  <head>
-    <title>A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node // Badasstronaut Solutions</title>
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <meta charset="utf-8" />
-    <meta name="generator" content="Hugo 0.92.2" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="author" content="Mickey" />
-    <meta name="description" content="" />
-    <link rel="stylesheet" href="/css/main.min.6ff2c724358c5915e614ff98b6c2d4113eac50d423232db3c1141a73960f4426.css" />
-
-    
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node"/>
-<meta name="twitter:description" content="This article was published on medium.
+<!doctype html><html lang=en-us>
+<head>
+<title>A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node // Badasstronaut Solutions</title>
+<link rel="shortcut icon" href=/favicon.ico>
+<meta charset=utf-8>
+<meta name=generator content="Hugo 0.92.2">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=author content="Mickey">
+<meta name=description content>
+<link rel=stylesheet href=/css/main.min.6ff2c724358c5915e614ff98b6c2d4113eac50d423232db3c1141a73960f4426.css>
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node">
+<meta name=twitter:description content="This article was published on medium.
 Even experienced developers sometimes miss subtle, but important, points regarding promises and unhandled rejections.
-Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out."/>
-
-    <meta property="og:title" content="A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node" />
+Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out.">
+<meta property="og:title" content="A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node">
 <meta property="og:description" content="This article was published on medium.
 Even experienced developers sometimes miss subtle, but important, points regarding promises and unhandled rejections.
-Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://badasstronaut.github.io/articles/2018-06-07-unhandled-promise/" /><meta property="article:section" content="articles" />
-<meta property="article:published_time" content="2018-06-07T00:00:00+00:00" />
-<meta property="article:modified_time" content="2018-06-07T00:00:00+00:00" />
-
-
-
-  </head>
-  <body>
-    <header class="app-header">
-      <a href="https://badasstronaut.github.io/"><img class="app-header-avatar" src="/img/me_pic.png" alt="Mickey" /></a>
-      <span class="app-header-title">Badasstronaut Solutions</span>
-      <nav class="app-header-menu">
-          <a class="app-header-menu-item" href="/">home</a>
-             - 
-          
-          <a class="app-header-menu-item" href="/about-me">about me</a>
-             - 
-          
-          <a class="app-header-menu-item" href="/articles">articles</a>
-      </nav>
-      <p>Mickey&#39;s personal site</p>
-    </header>
-    <main class="app-container">
-      
-  <article class="post">
-    <header class="post-header">
-      <h1 class ="post-title">A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node</h1>
-      <div class="post-meta">
-        <div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
-  <title>calendar</title>
-  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-</svg>
-          Jun 7, 2018
-        </div>
-        <div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
-  <title>clock</title>
-  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
-</svg>
-          2 min read
-        </div>
-      </div>
-    </header>
-    <div class="post-content">
-      <p>This article was published on <a href="https://medium.com/@kyle.mickey/a-practical-guide-to-avoid-unhandled-promise-rejection-deprecationwarnings-in-node-f9c67634dd2b">medium</a>.</p>
+Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://badasstronaut.github.io/articles/2018-06-07-unhandled-promise/"><meta property="article:section" content="articles">
+<meta property="article:published_time" content="2018-06-07T00:00:00+00:00">
+<meta property="article:modified_time" content="2018-06-07T00:00:00+00:00">
+</head>
+<body>
+<header class=app-header>
+<a href=https://badasstronaut.github.io/><img class=app-header-avatar src=/img/me_pic.png alt=Mickey></a>
+<span class=app-header-title>Badasstronaut Solutions</span>
+<nav class=app-header-menu>
+<a class=app-header-menu-item href=/>home</a>
+-
+<a class=app-header-menu-item href=/about-me>about me</a>
+-
+<a class=app-header-menu-item href=/articles>articles</a>
+</nav>
+<p>Mickey's personal site</p>
+</header>
+<main class=app-container>
+<article class=post>
+<header class=post-header>
+<h1 class=post-title>A practical guide to avoid unhandled promise rejection DeprecationWarnings in Node</h1>
+<div class=post-meta>
+<div><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar"><title>calendar</title><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+Jun 7, 2018
+</div>
+<div><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock"><title>clock</title><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+2 min read
+</div>
+</div>
+</header>
+<div class=post-content>
+<p>This article was published on <a href=https://medium.com/@kyle.mickey/a-practical-guide-to-avoid-unhandled-promise-rejection-deprecationwarnings-in-node-f9c67634dd2b>medium</a>.</p>
 <p>Even experienced developers sometimes miss subtle, but important, points regarding promises and unhandled rejections.</p>
 <p>Let’s say you’re working on a RESTful (ish?) API. You’ve just spent the last few hours writing a whole bunch of business logic, you have controllers calling services, and services calling repositories or data models, getting all asynchronous up in here. Everything’s humming along perfectly, until suddenly your endpoint doesn’t respond and times out. You check the logs or console outputs, and you see: <code>(node:127) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.</code></p>
-<!-- raw HTML omitted -->
 <p>But you were so careful! So what happened here!? Let’s take a look.</p>
-<h3 id="nested-promises">Nested Promises</h3>
+<h3 id=nested-promises>Nested Promises</h3>
 <p>Here we have promises that get some values, then make additional promises.</p>
-<!-- raw HTML omitted -->
 <p>The promise on line 4 to <code>getUserInfo</code> never gets caught! Nested promises do not get caught automatically, so you need a catch block for every promise chain!</p>
-<h3 id="abusing-asyncawait-and-trycatch">Abusing Async/Await and Try/Catch</h3>
+<h3 id=abusing-asyncawait-and-trycatch>Abusing Async/Await and Try/Catch</h3>
 <p>Async/await in JS is pretty new, but under the hood ‘await’ is still just a promise! And, just like in the example above, each awaited promise needs to be handled and caught. While you can wrap multiple async calls in a single try/catch block, it’s important to make sure that the awaited functions either resolve or reject.</p>
-<!-- raw HTML omitted -->
-<h3 id="defensive-techniques">Defensive Techniques</h3>
+<h3 id=defensive-techniques>Defensive Techniques</h3>
 <p>As we saw in the first example, a promise that does not resolve or reject does not get handled. Unhandled rejections are bad. This whole issue can be avoided by always returning your promises!</p>
-<!-- raw HTML omitted -->
 <p>Note that we are only using one promise chain!</p>
 <p>Sometimes, you may need additional parameters from outside the promise chain. This can be elegantly handled by currying your functions!</p>
-<!-- raw HTML omitted -->
-<h3 id="conclusion">Conclusion</h3>
+<h3 id=conclusion>Conclusion</h3>
 <p>In the near future, node.js will terminate and exit on unhandled promise rejections. I recently watched Ryan Dahl (creator of node) discussing 10 things he regrets about node, and he said something about how obvious it is that an application should terminate when a promise rejection is unhandled.</p>
 <p>So, let’s keep our promises and handle rejection well!</p>
-
-    </div>
-    <div class="post-footer">
-      
-    </div>
-  </article>
-
-    </main>
-  </body>
+</div>
+<div class=post-footer>
+</div>
+</article>
+</main>
+</body>
 </html>
